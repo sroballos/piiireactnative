@@ -23,9 +23,6 @@ export default class Register extends Component {
   }
 
   handleSubmit = () => {
-    console.log("Email:", this.state.email);
-    console.log("UserName:", this.state.userName);
-    console.log("Password:", this.state.password);
 
     auth
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
@@ -51,6 +48,8 @@ export default class Register extends Component {
   };
 
   render() {
+    const { email, userName, password } = this.state;
+    
     return (
       <View style={styles.container}>
         <Text>Hola, esto es el register</Text>
@@ -79,9 +78,13 @@ export default class Register extends Component {
           value={this.state.password}
         />
 
-        <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
+        {email && userName && password ? (
+          <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+        ) : null}
+
+        
 
         {this.state.errorMSG && <Text>{this.state.errorMSG}</Text>}
 
