@@ -19,7 +19,7 @@ export default class Register extends Component {
       password: "",
       registered: false,
       errorMSG: "",
-    };
+    }; 
   }
 
   handleSubmit = () => {
