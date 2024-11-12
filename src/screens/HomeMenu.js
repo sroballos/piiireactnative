@@ -1,5 +1,5 @@
-import { Component } from "react";
-import { Text, View, FlatList, StyleSheet } from "react-native-web";
+import React, { Component } from "react";
+import { Text, View, FlatList, StyleSheet, Button } from "react-native";
 import Post from "../components/Post";
 import { auth, db } from "../firebase/config";
 
@@ -9,36 +9,58 @@ export default class HomeMenu extends Component {
 
     this.state = {
       posts: [],
+      logueado: false,
     };
   }
 
   componentDidMount() {
-    db.collection("posts").onSnapshot((docs) => {
-      let posts = [];
-      docs.forEach((doc) => {
-        posts.push({ id: doc.id, data: doc.data() });
-      });
-      console.log(posts);
-      this.setState({
-        posts: posts,
-      });
+    
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ logueado: true });
+        
+        db.collection("posts").onSnapshot((docs) => {
+          let posts = [];
+          docs.forEach((doc) => {
+            posts.push({ id: doc.id, data: doc.data() });
+          });
+          this.setState({ posts: posts });
+        });
+      } else {
+        this.setState({ logueado: false });
+      }
     });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Home</Text>
-        <View style={styles.postContainer}>
-        {this.state.posts.length != 0 && (
-          <FlatList
-            data={this.state.posts}
-            keyExtractor={(post) => post.id}
-            renderItem={({ item }) => <Post content={item.data.msg} userName={item.data.user} likes={`${item.data.likes}`} />}
-          />
+        {this.state.logueado ? (
+          <>
+            <Text>Home</Text>
+            <View style={styles.postContainer}>
+              {this.state.posts.length != 0 && (
+                <FlatList
+                  data={this.state.posts}
+                  keyExtractor={(post) => post.id}
+                  renderItem={({ item }) => (
+                    <Post
+                      content={item.data.msg}
+                      userName={item.data.user}
+                      likes={`${item.data.likes}`}
+                    />
+                  )}
+                />
+              )}
+            </View>
+          </>
+        ) : (
+          <>
+            <Text>Bienvenido a la app</Text>
+            <Button title="Login" onPress={() => this.props.navigation.navigate("Login")} />
+            <Button title="Register" onPress={() => this.props.navigation.navigate("Register")} />
+          </>
         )}
-        </View>
-
       </View>
     );
   }
@@ -52,7 +74,7 @@ const styles = StyleSheet.create({
   },
   postContainer: {
     flex: 1,
-    flexDirection: "Row",
-    width:"90%"
-  }
+    flexDirection: "row",
+    width: "90%",
+  },
 });
