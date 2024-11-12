@@ -49,7 +49,7 @@ export default class Register extends Component {
 
   render() {
     const { email, userName, password } = this.state;
-    
+
     return (
       <View style={styles.container}>
         <Text>Hola, esto es el register</Text>
@@ -88,12 +88,14 @@ export default class Register extends Component {
 
         {this.state.errorMSG && <Text>{this.state.errorMSG}</Text>}
 
-        <Text style={styles.accountText}>Already have an account?</Text>
+        <Text style={styles.texto}>¿Ya tenes una cuenta?</Text>
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Login")}
         >
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
+
+
       </View>
     );
   }
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  accountText: {
+  texto: {
     marginTop: 20,
     fontSize: 16,
     color: "#555",
