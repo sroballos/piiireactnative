@@ -13,9 +13,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-      <Tab.Screen name="Register" component={Register} options={{headerShown: false}} />
         <Tab.Screen name="Home" component={HomeMenu} options={{headerShown: false}} />
-        
+        <Tab.Screen name="Register" component={Register} options={{headerShown: false}} />
         <Tab.Screen name="Login" component={Login} options={{headerShown: false}} />
         <Tab.Screen name="Profile" component={Profile} options={{headerShown: false}} />
       </Tab.Navigator>
